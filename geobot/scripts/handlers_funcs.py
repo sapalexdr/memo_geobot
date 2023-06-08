@@ -59,7 +59,7 @@ async def append_unique_user_id(users: Dict[str, Any], user_id: int):
     """
     if user_id not in users['users']:
         users['users'].append(user_id)
-        await save_json_data("data/users.json", users)
+        await save_json_data("geobot/data/users.json", users)
 
 
 def menu_keyboard():
@@ -92,7 +92,7 @@ async def handle_start(message: types.Message):
     Args:
         message: An Aiogram types.Message object.
     """
-    users = await load_json_data("data/users.json")
+    users = await load_json_data("geobot/data/users.json")
     await append_unique_user_id(users, message.from_user.id)
     await send_welcome_message(message)
 
@@ -188,7 +188,7 @@ async def show_stats(message: types.Message):
         dp: Dispatcher object.
     """
 
-    stats = await load_json_data('data/users.json')
+    stats = await load_json_data('geobot/data/users.json')
     total_users = len(stats['users'])
     stats_message = f"Пользуются ботом: {total_users}"
 
@@ -311,7 +311,7 @@ async def mailing(message: types.Message):
                 mailing_text = mailing_text.replace(
                     link_text, f'<a href="{entity.url}">{link_text}</a>')
 
-        user_list = await load_json_data('data/users.json')
+        user_list = await load_json_data('geobot/data/users.json')
         user_list = user_list['users']
 
         for user in user_list:
@@ -337,14 +337,14 @@ async def chat(message: types.Message):
         user_id = message.from_user.id
 
         returend_message = await message.forward(ADMIN_GROUP_ID)
-        chat_data = await load_json_data('data/chat_data.json')
+        chat_data = await load_json_data('geobot/data/chat_data.json')
 
         message_id = returend_message.message_id
         chat_data[message_id] = user_id
-        await save_json_data('data/chat_data.json', chat_data)
+        await save_json_data('geobot/data/chat_data.json', chat_data)
 
     elif message.reply_to_message.from_user.is_bot:
         message_id = message.reply_to_message.message_id
-        chat_data = await load_json_data('data/chat_data.json')
+        chat_data = await load_json_data('geobot/data/chat_data.json')
         user_id = int(chat_data[str(message_id)])
         await dp.bot.send_message(user_id, message.text)

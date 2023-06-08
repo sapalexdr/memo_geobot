@@ -69,7 +69,7 @@ def write_buildings_data_from_notion():
             }
         )
 
-    with open("data/buildings_data.json", "w") as f:
+    with open("geobot/data/buildings_data.json", "w") as f:
         json.dump(buildings_list, f, indent=4, ensure_ascii=False)
         
     return True

@@ -84,7 +84,7 @@ def get_closest_buildings(latitude_user: float, longitude_user: float, radius: f
     Returns:
         list[dict]: A list of dictionaries, each containing the distance to a building and the building data. The list is sorted by distance.
     """
-    with open("data/buildings_data.json") as f:
+    with open("geobot/data/buildings_data.json") as f:
         buildings_dictionary = json.load(f)
     closest_buildings = []
     for building in buildings_dictionary:
@@ -168,7 +168,7 @@ def send_geo_by_coordinates(link: str):
     Returns:
         tuple: A tuple of two floats, representing the latitude and longitude of the building.
     """
-    with open("data/buildings_data.json") as f:
+    with open("geobot/data/buildings_data.json") as f:
         buildings_dictionary = json.load(f)
     
     for building in buildings_dictionary:
