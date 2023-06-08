@@ -114,7 +114,7 @@ async def handle_street_search_button(message: Message, state: FSMContext):
     
     await state.set_state(UserStates.street_search)
     random_places = random.sample(places, 3)
-    await message.answer(text=f'Напишите адрес в свободном формате.\n\nНапример: {random_places[0]}, {random_places[1]}, {random_places[2]}')
+    await message.answer(text=f'Напишите адрес в свободном формате.\n\nНапример: «{random_places[0]}», «{random_places[1]}», «{random_places[2]}»')
 
 
 async def back_from_street_search(call: CallbackQuery, state:FSMContext):
