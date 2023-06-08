@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  memo_geobot:
+    build: ./
+    env_file: geobot/.env
+    restart: always
+    networks:
+      memo_geobot:
+        ipv4_address: 172.19.0.3
+
+networks:
+  memo_geobot:
+    name: memo_geobot
+    ipam:
+      config:
+        - subnet: 172.19.0.0/24
+

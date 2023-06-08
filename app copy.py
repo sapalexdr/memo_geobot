@@ -19,9 +19,12 @@ dp.message_handler(content_types=['location'])(get_location)
 dp.callback_query_handler(text="show_next_building")(show_next_building)
 dp.callback_query_handler(text='back_from_street_search', state=UserStates.street_search)(
     back_from_street_search)
+
 dp.message_handler(content_types=['photo', 'text', 'video', 'document',
                                      'video_note', 'voice', 'sticker', 'audio', 'contact'])(chat)
+
 dp.edited_message_handler(content_types=["location"])(get_live_geo)
+
 dp.callback_query_handler(text="send_geo")(send_geo)
 
 if __name__ == "__main__":
