@@ -1,3 +1,0 @@
-aiogram==2.22.1
-notion_client==2.0.0
-python-dotenv==1.0.0

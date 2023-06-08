@@ -1,12 +1,7 @@
 from notion_client import Client
 import json
-import os
-from dotenv.main import load_dotenv
+from utils.utils import NOTION_API_TOKEN, NOTION_DB
 
-load_dotenv()
-
-NOTION_API_TOKEN = os.getenv('NOTION_API_TOKEN')
-NOTION_DB = os.getenv('NOTION_DB')
 
 
 def write_buildings_data_from_notion():
@@ -99,6 +94,3 @@ def increment_views_counter(page_id):
         }
     )
     return new_views_counter
-
-
-# write_buildings_data_from_notion()

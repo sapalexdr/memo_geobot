@@ -2,11 +2,12 @@ import math
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 import aiogram
 import json
-from data.from_notion import increment_views_counter
+from scripts.from_notion import increment_views_counter
+from aiogram.types import Message
+from aiogram.dispatcher.storage import FSMContext
 
     
-
-async def handle_location(message: aiogram.types.Message, state: aiogram.dispatcher.storage.FSMContext, live=False):
+async def handle_location(message: aiogram.types.Message, state: aiogram.dispatcher.storage.FSMContext, lat_user: float, lon_user: float, live =False):
     """
     Handles user location messages and sends information about the closest building.
 
@@ -30,9 +31,6 @@ async def handle_location(message: aiogram.types.Message, state: aiogram.dispatc
         message_to_reply = message.message_id
         previous_link = None
 
-    lat_user = message.location.latitude
-    lon_user = message.location.longitude
-
     radius = 0.5 if not live else 0.1
 
     closest_buildings = get_closest_buildings(
@@ -45,7 +43,7 @@ async def handle_location(message: aiogram.types.Message, state: aiogram.dispatc
         closest_buildings = get_closest_buildings(
             lat_user, lon_user, 6371, message_to_reply)
         distance = closest_buildings[0]["distance"]
-        await message.reply(text=f"В радиусе {round((radius)*100)} метров нет зданий! До ближайшего {round(distance)} км")
+        await message.reply(text=f"В радиусе {round((radius)*100)} метров нет зданий! До ближайшего {round(distance)} км\n\nЖмите на кнопки!")
         return
 
 
