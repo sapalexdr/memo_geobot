@@ -1,0 +1,17 @@
+[Unit]
+Description=Memo Geobot
+After=multi-user.target
+
+[Service]
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=/usr/local/share/memo_geobot/geobot/.env
+WorkingDirectory=/usr/local/share/memo_geobot/geobot/
+User=memo_geobot
+Group=memo_geobot
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 /usr/local/share/memo_geobot/geobot/app.py
+
+[Install]
+WantedBy=multi-user.target
+

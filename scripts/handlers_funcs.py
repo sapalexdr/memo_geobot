@@ -240,7 +240,7 @@ async def send_geo(call: CallbackQuery, state: FSMContext):
     link = call.message.reply_markup.inline_keyboard[0][0].url
     lat_d, lon_d = send_geo_by_coordinates(link)
     await call.message.reply_location(
-        latitude=lat_d, longitude=lon_d, disable_notification=True
+        latitude=lat_d, longitude=lon_d, disable_notification=True, 
     )
     await call.answer(cache_time=1)
 

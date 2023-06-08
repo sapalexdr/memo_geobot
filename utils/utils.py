@@ -8,9 +8,9 @@ from dotenv.main import load_dotenv
 load_dotenv()
 
 LOG_LEVEL = os.getenv("LEVEL")
-LOG_PATH = os.getenv("LOG_PATH")
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=LOG_LEVEL, filename=LOG_PATH, filemode='a')
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  level=LOG_LEVEL)
+
 
 BOT_API_TOKEN = os.getenv("BOT_API_TOKEN")
 ADMIN_GROUP_ID = int(os.getenv("ADMIN_GROUP_ID"))
