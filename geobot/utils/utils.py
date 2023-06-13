@@ -26,6 +26,9 @@ dp = Dispatcher(bot, storage=storage)
 
 class UserStates(StatesGroup):
     street_search = State()
+    
+DYNAMIC_RADIUS = 0.1
+STATIC_RADIUS = 0.5
 
 
 async def on_startup(dp):
@@ -44,7 +47,3 @@ async def on_shutdown(dp):
     await dp.bot.send_message(
         chat_id=ADMIN_GROUP_ID, text="Бот выключен", disable_notification=True
     )
-
-
-STATIC_RADIUS = float(os.getenv("STATIC_RADIUS"))
-DYNAMIC_RADIUS = float(os.getenv("DYNAMIC_RADIUS"))

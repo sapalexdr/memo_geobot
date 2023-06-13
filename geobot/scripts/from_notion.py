@@ -22,9 +22,7 @@ async def get_buildings_from_notion():
         return
 
     try:
-        collection = await MongoDB().get_collection(
-            "topos_memo_bot", "buildings_collection"
-        )
+        collection = await MongoDB().get_collection("buildings_collection")
     except Exception as e:
         logging.error(f"Failed to connect to MongoDB: {str(e)}")
         return
@@ -127,7 +125,7 @@ async def check_for_duplicates(buildings_list):
 
 
 # async def make_viewbox():
-#     collection = await MongoDB().get_collection('topos_memo_bot', 'buildings_collection')
+#     collection = await MongoDB().get_collection('buildings_collection')
 
 #     max_longitude_doc = await collection.find().sort("location.coordinates.0", -1).limit(1).to_list(length=1)
 #     min_longitude_doc = await collection.find().sort("location.coordinates.0", 1).limit(1).to_list(length=1)
@@ -135,7 +133,6 @@ async def check_for_duplicates(buildings_list):
 #     max_latitude_doc = await collection.find().sort("location.coordinates.1", -1).limit(1).to_list(length=1)
 #     min_latitude_doc = await collection.find().sort("location.coordinates.1", 1).limit(1).to_list(length=1)
 
-#     # ensure you have the documents before accessing
 #     if max_longitude_doc and min_longitude_doc and max_latitude_doc and min_latitude_doc:
 #         max_longitude = max_longitude_doc[0]["location"]["coordinates"][0]
 #         min_longitude = min_longitude_doc[0]["location"]["coordinates"][0]
@@ -160,9 +157,7 @@ async def load_buildings_to_mongo(buildings_list):
     After loading the data, it creates a geospatial index on the 'location' field for efficient querying.
     """
     try:
-        collection = await MongoDB().get_collection(
-            "topos_memo_bot", "buildings_collection"
-        )
+        collection = await MongoDB().get_collection("buildings_collection")
     except Exception as e:
         logging.error(f"Failed to connect to MongoDB: {str(e)}")
         return False
@@ -204,9 +199,7 @@ async def increment_views_counter(page_id):
     If the page ID is not found, it returns None.
     """
     try:
-        collection = await MongoDB().get_collection(
-            "topos_memo_bot", "buildings_collection"
-        )
+        collection = await MongoDB().get_collection("buildings_collection")
     except Exception as e:
         logging.error(f"Failed to connect to MongoDB: {str(e)}")
         return None

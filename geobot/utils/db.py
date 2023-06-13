@@ -35,8 +35,8 @@ class MongoDB(metaclass=SingletonMeta):
             logging.error("Failed to connect to MongoDB: %s", e)
             raise e
 
-    async def get_collection(self, db_name, collection_name):
-        db = self.client[db_name]
+    async def get_collection(self, collection_name):
+        db = self.client[DB_NAME]
         collection = db[collection_name]
         return collection
 

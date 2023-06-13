@@ -47,7 +47,7 @@ async def send_welcome_message(message: types.Message):
 
 
 async def add_new_user_to_mongo(user_id):
-    collection = await MongoDB().get_collection("topos_memo_bot", "users")
+    collection = await MongoDB().get_collection("users")
     existing_user = await collection.find_one({"id": user_id})
 
     if existing_user is None:
@@ -192,8 +192,7 @@ async def refresh_buildings_info(message: types.Message):
             await status_message.edit_text(text=f"Обновлений нет 🤷‍♂️")
 
         await dp.bot.send_message(
-            text=f"@{message.from_user.username}", chat_id=ADMIN_GROUP_ID
-        )
+            text=f"@{message.from_user.username}", chat_id=ADMIN_GROUP_ID, reply_to_message_id=status_message.message_id)
 
 
 async def show_stats(message: types.Message):
@@ -205,7 +204,7 @@ async def show_stats(message: types.Message):
         dp: Dispatcher object.
     """
     if message.chat.id == ADMIN_GROUP_ID:
-        collection = await MongoDB().get_collection("topos_memo_bot", "users")
+        collection = await MongoDB().get_collection("users")
         total_users = await collection.count_documents({})
         stats_message = f"Пользуются ботом: {total_users}"
 
@@ -392,7 +391,7 @@ async def mailing(message: types.Message):
                     link_text, f'<a href="{entity.url}">{link_text}</a>'
                 )
 
-        collection = await MongoDB().get_collection("topos_memo_bot", "users")
+        collection = await MongoDB().get_collection("users")
         total_users = await collection.count_documents({})
 
         cursor = collection.find({}, {"_id": 0, "id": 1})
@@ -424,7 +423,7 @@ async def chat(message: types.Message):
         message: An Aiogram types.Message object.
         dp: Dispatcher object.
     """
-    collection = await MongoDB().get_collection("topos_memo_bot", "chat")
+    collection = await MongoDB().get_collection("chat")
 
     if message.chat.id != ADMIN_GROUP_ID:
         user_id = message.from_user.id

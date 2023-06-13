@@ -152,9 +152,7 @@ async def get_buildings_from_pipeline(
     message_to_reply_id: int,
 ) -> list[dict]:
     closest_buildings = []
-    collection = await MongoDB().get_collection(
-        "topos_memo_bot", "buildings_collection"
-    )
+    collection = await MongoDB().get_collection("buildings_collection")
     async for building in collection.aggregate(pipeline):
         distance = building["distance"] / 1000
         closest_buildings.append(
@@ -296,9 +294,7 @@ async def send_geo_by_coordinates(link: str):
         tuple: A tuple of two floats, representing the latitude and longitude of the building.
     """
 
-    collection = await MongoDB().get_collection(
-        "topos_memo_bot", "buildings_collection"
-    )
+    collection = await MongoDB().get_collection("buildings_collection")
     building = await collection.find_one({"link": link})
 
     if building:
