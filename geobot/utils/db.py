@@ -9,6 +9,7 @@ load_dotenv()
 DB_USER_NAME = os.getenv("DB_USER_NAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_NAME = os.getenv("DB_NAME")
+DB_HOST = os.getenv("DB_HOST")
 
 
 class SingletonMeta(type):
@@ -28,7 +29,7 @@ class MongoDB(metaclass=SingletonMeta):
     async def connect(self):
         try:
             self.client = AsyncIOMotorClient(
-                f"mongodb+srv://{DB_USER_NAME}:{DB_PASSWORD}@cluster0.nq2ja1q.mongodb.net/?retryWrites=true&w=majority"
+                f"mongodb+srv://{DB_USER_NAME}:{DB_PASSWORD}@{DB_HOST}/?retryWrites=true&w=majority"
             )
             logging.info("Connected to MongoDB")
         except Exception as e:
