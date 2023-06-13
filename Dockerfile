@@ -11,7 +11,7 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python -m venv $VIRTUAL_ENV
 # Some magic: next line also activates venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-COPY geobot/utils/requirements.txt /tmp/requirements.txt
+COPY geobot/requirements.txt /tmp/requirements.txt
 RUN pip install --upgrade pip -r /tmp/requirements.txt
 
 # Switching to an unprivileged user
