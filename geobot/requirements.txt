@@ -1,4 +1,6 @@
 aiogram==2.22.1
 geopy==2.3.0
+motor==3.1.2
 notion_client==2.0.0
+pymongo==4.3.3
 python-dotenv==1.0.0
