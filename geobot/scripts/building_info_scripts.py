@@ -249,22 +249,21 @@ def create_keyboard(
     choice_menu.row(street_choice, get_geo)
 
     if len(closest_buildings) > 1 and index != 0:
-        choice_menu.insert(previous_building)
+        choice_menu.row(previous_building_short, counter)
 
     if len(closest_buildings) > 1 and index + 1 != len(closest_buildings):
-        choice_menu.insert(next_building)
+        choice_menu.row(counter, next_building_short)
 
     if (
         len(closest_buildings) > 1
         and index != 0
         and index + 1 != len(closest_buildings)
     ):
-        choice_menu.inline_keyboard.remove([next_building])
-        choice_menu.inline_keyboard.remove([previous_building])
-        choice_menu.row(previous_building_short, next_building_short)
+        choice_menu.inline_keyboard.remove([counter, next_building_short])
+        choice_menu.inline_keyboard.remove([previous_building_short, counter])
+        choice_menu.row(previous_building_short, counter, next_building_short)
 
     choice_menu.insert(save)
-    choice_menu.insert(counter)
 
     return choice_menu
 
