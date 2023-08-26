@@ -7,7 +7,7 @@ from aiogram.types import (CallbackQuery, InlineKeyboardButton,
                            InlineKeyboardMarkup, InputMediaPhoto,
                            KeyboardButton, Message, ParseMode,
                            ReplyKeyboardMarkup)
-from geopy.exc import GeocoderTimedOut, GeocoderUnavailable
+from geopy.exc import GeocoderTimedOut, GeocoderUnavailable, GeocoderInsufficientPrivileges
 from geopy.geocoders import Nominatim
 from scripts.building_info_scripts import (create_keyboard,
                                            create_keyboard_for_saved_message,
@@ -41,8 +41,8 @@ async def send_welcome_message(message: types.Message):
     """
     keyboard = menu_keyboard()
     await message.answer(
-        "Примерный текст\n\nПривет!\n\nсмысловая часть\n\n Вы можете:\nВвести название улицы или места в Москве\nОтправить боту текущую геопозицию\nОтправить любую геопозицию или ее трансляцию",
-        reply_markup=keyboard,
+        f"Этот бот покажет вам локации в Москве, которые связаны с советскими репрессиями и расскажет об их истории.\n\nЧтобы увидеть подборку мест боту можно\n\n🔶 отправить геопозицию — тогда он покажет места репрессий рядом и расскажет, как к ним подойти\n\n🔶 отправить название улицы или места — бот тоже расскажет, что находится рядом\n\n🔶 транслировать живую геопозицию, гуляя по Москве — тогда бот будет делать подсказки прямо во время прогулки\n\nСделать это можно при помощи кнопок внизу.\n\nДанные для бота взяты с сайта <a href='https://topos.memo.ru'>«Это прямо здесь»</a>.\n\nЭтот бот — проект <a href='https://t.me/toposmemoru'>Мемориала</a>, мы благодарим сотрудников и волонтеров Мемориала за помощь при разработке бота.",
+        reply_markup=keyboard, parse_mode=ParseMode.HTML, disable_web_page_preview=True
     )
 
 
@@ -125,7 +125,7 @@ async def search_geo_by_street(message: types.Message, state: FSMContext):
     back_from_search_kb.insert(back_button)
 
     # viewbox = await make_viewbox()
-    geolocator = Nominatim(user_agent="geoapiExercises")
+    geolocator = Nominatim(user_agent="memo_geobot")
     try:
         location = geolocator.geocode(
             f"{message.text}", namedetails=1, country_codes="ru"
@@ -147,17 +147,25 @@ async def search_geo_by_street(message: types.Message, state: FSMContext):
         )
         await dp.bot.send_message(
             chat_id=message.from_user.id,
-            text=f"🔎\n\nВаш запрос превратился в <b>{location.address}</b>\n\nЕсли запрос неправильный – попробуйте еще раз через кнопки!",
+            text=f"Если запрос неправильный – попробуйте еще раз через кнопки!",
             parse_mode=ParseMode.HTML,
             reply_to_message_id=message.message_id,
         )
+        
+        
+        # await dp.bot.send_message(
+        #     chat_id=message.from_user.id,
+        #     text=f"🔎\n\nВаш запрос превратился в <b>{location.raw}</b>\n\nЕсли запрос неправильный – попробуйте еще раз через кнопки!",
+        #     parse_mode=ParseMode.HTML,
+        #     reply_to_message_id=message.message_id,
+        # )
         await state.finish()
 
         await handle_location(
             message, state, lat_user=location.latitude, lon_user=location.longitude
         )
 
-    except (GeocoderTimedOut, GeocoderUnavailable):
+    except (GeocoderTimedOut, GeocoderUnavailable, GeocoderInsufficientPrivileges):
         await message.reply("Что-то пошло не так, попробуйте еще раз")
         await state.finish()
 
@@ -177,9 +185,7 @@ async def refresh_buildings_info(message: types.Message):
         )
 
         buildings_list = await get_buildings_from_notion()
-
         pure_buildings_list = await check_for_duplicates(buildings_list)
-
         added_count, updated_count = await load_buildings_to_mongo(pure_buildings_list)
 
         # VIEWBOX = await make_viewbox()
