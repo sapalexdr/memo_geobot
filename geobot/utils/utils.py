@@ -10,7 +10,7 @@ from utils.middleware import RateLimitingMiddleware
 
 load_dotenv()
 
-LOG_LEVEL = os.getenv("LEVEL")
+LOG_LEVEL = os.getenv("LOG_LEVEL")
 
 
 BOT_API_TOKEN = os.getenv("BOT_API_TOKEN")
@@ -32,18 +32,18 @@ STATIC_RADIUS = 0.5
 
 
 async def on_startup(dp):
-    await MongoDB().connect()
     logging.basicConfig(
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=LOG_LEVEL
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.DEBUG, filename="bot.log", filemode="a"
     )
+    await MongoDB().connect()
     dp.middleware.setup(RateLimitingMiddleware())
     await dp.bot.send_message(
-        chat_id=ADMIN_GROUP_ID, text="Бот запущен", disable_notification=True
+        chat_id=ADMIN_GROUP_ID, text="бот поднялся", disable_notification=True
     )
 
 
 async def on_shutdown(dp):
     await MongoDB().close()
     await dp.bot.send_message(
-        chat_id=ADMIN_GROUP_ID, text="Бот выключен", disable_notification=True
+        chat_id=ADMIN_GROUP_ID, text="бот упал", disable_notification=True
     )
