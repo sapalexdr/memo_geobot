@@ -33,7 +33,7 @@ STATIC_RADIUS = 0.5
 
 async def on_startup(dp):
     logging.basicConfig(
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.DEBUG, filename="bot.log", filemode="a"
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=LOG_LEVEL, filename="bot.log", filemode="a"
     )
     await MongoDB().connect()
     dp.middleware.setup(RateLimitingMiddleware())
