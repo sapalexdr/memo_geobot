@@ -29,8 +29,8 @@ class MongoDB(metaclass=SingletonMeta):
     async def connect(self):
         try:
             self.client = AsyncIOMotorClient(
-                f"mongodb+srv://{DB_USER_NAME}:{DB_PASSWORD}@{DB_HOST}/?retryWrites=true&w=majority"
-            )
+                 f"mongodb://{DB_USER_NAME}:{DB_PASSWORD}@{DB_HOST}/?retryWrites=true&w=majority"
+             )
             logging.info("Connected to MongoDB")
         except Exception as e:
             logging.error("Failed to connect to MongoDB: %s", e)
