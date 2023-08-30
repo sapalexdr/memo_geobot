@@ -11,6 +11,7 @@ from utils.middleware import RateLimitingMiddleware
 load_dotenv()
 
 LOG_LEVEL = os.getenv("LOG_LEVEL")
+LOG_PATH = os.getenv("LOG_PATH")
 
 
 BOT_API_TOKEN = os.getenv("BOT_API_TOKEN")
@@ -33,7 +34,7 @@ STATIC_RADIUS = 0.5
 
 async def on_startup(dp):
     logging.basicConfig(
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=LOG_LEVEL, filename="bot.log", filemode="a"
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=LOG_LEVEL, filename=LOG_PATH, filemode="a"
     )
     await MongoDB().connect()
     dp.middleware.setup(RateLimitingMiddleware())
