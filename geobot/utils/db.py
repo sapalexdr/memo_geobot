@@ -6,10 +6,11 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv()
 
-DB_USER_NAME = os.getenv("DB_USER_NAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_NAME = os.getenv("DB_NAME")
+DB_USER_NAME = os.getenv("MONGO_INITDB_ROOT_USERNAME")
+DB_PASSWORD = os.getenv("MONGO_INITDB_ROOT_PASSWORD")
+DB_NAME = os.getenv("MONGO_INITDB_DATABASE")
 DB_HOST = os.getenv("DB_HOST")
+
 
 
 class SingletonMeta(type):
